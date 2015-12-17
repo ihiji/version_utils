@@ -18,6 +18,9 @@ from __future__ import (absolute_import, division,
 from logging import getLogger
 from re import compile
 
+# version_utils imports
+from version_utils.errors import RpmError
+
 
 _rpm_re = compile('(\S+)-(\d*):?([\w~]+[\w.~]*)-(~?\w+[\w.]*)')
 
@@ -168,7 +171,11 @@ def parse_package(package_string, arch_included=True):
         arch = _pop_arch(char_list)
         package_string = ''.join(char_list)
         logger.debug('updated version_string: {0}'.format(package_string))
-    name, epoch, version, release = _rpm_re.match(package_string).groups()
+    try:
+        name, epoch, version, release = _rpm_re.match(package_string).groups()
+    except AttributeError:
+        raise RpmError('Could not parse package string: '
+                       '{0}'.format(package_string))
     epoch = default_epoch if epoch == '' else epoch
     info = {
         'name': name,
