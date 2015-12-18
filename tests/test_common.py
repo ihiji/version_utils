@@ -13,12 +13,10 @@ except ImportError:
     from mock import MagicMock, patch
 
 from logging import getLogger
-from sys import path
 
 logger = getLogger(__name__)
 
 
-path.append('..')
 from version_utils import common
 from version_utils.common import Package
 
