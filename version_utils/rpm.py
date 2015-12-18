@@ -8,8 +8,9 @@ Public methods include:
       ``gcc-4.4.7-16.el6.x86_64`` and ``gcc-4.4.7-17.el6.x86_64``
     * :any:`compare_versions`: compare two RPM version strings (the
       bit between the dashes in an RPM package string)
-    * :any:`parse_package`: get name, EVR (epoch, version, release),
-      and architecture information from an RPM package string
+    * :any:`package`: parse an RPM package string to get name, epoch,
+      version, release, and architecture information. Returns as a
+      :any:`common.Package` object.
 """
 
 # Standard library imports
@@ -146,7 +147,7 @@ def compare_versions(version_a, version_b):
 
 
 def package(package_string, arch_included=True):
-    """Parse an RPM version string and return a :any:`Package` object
+    """Parse an RPM version string
 
     Parses most (all tested) RPM version strings to get their name,
     epoch, version, release, and architecture information. Epoch (also
@@ -157,8 +158,9 @@ def package(package_string, arch_included=True):
 
     :param str package_string:
     :param bool arch_included:
-    :return: A `Package` object containing all parsed information
-    :rtype: Package
+    :return: A :any:`common.Package` object containing all parsed
+        information
+    :rtype: common.Package
     """
     logger.debug('package({0}, {1})'.format(package_string, arch_included))
     pkg_info = parse_package(package_string, arch_included)

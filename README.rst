@@ -99,7 +99,7 @@ Changes
 * *0.1.1* - Added VersionUtilsError and RpmError classes. RpmError is thrown
   if a package string cannot be parsed. All errors inherit from
   VersionUtilsError
-* *0.2.0* - Added :any:`Package` class and :any:`rpm.package` method to return
-  a Package object when parsing package strings. Deprecated public access to
-  the :any:`rpm.parse_package` method, although the function remains unchanged
-  for backwards compatibility.
+* *0.2.0* - Added :any:`common.Package` class and :any:`rpm.package` method to
+  return a Package object when parsing package strings. Deprecated public
+  access to the :any:`rpm.parse_package` method, although the function remains
+  unchanged for backwards compatibility.
