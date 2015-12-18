@@ -13,7 +13,9 @@ except ImportError:
     from mock import MagicMock, patch
 
 from logging import getLogger
+from sys import path
 
+path.append('..')
 from version_utils import rpm
 from version_utils import errors
 
