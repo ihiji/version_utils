@@ -16,7 +16,7 @@ long_description = ('version_utils is a pure Python convenience library for'
 
 setup(
     name='version_utils',
-    version='0.1.0',
+    version='0.1.1',
     description=('Library for parsing system package strings and comparing '
                  'package versions'),
     url='http://www.github.com/ihiji/version_utils',
