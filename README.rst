@@ -56,4 +56,12 @@ present. The example below uses the ``rpm`` module. From your application::
         print('System package does not satisfy requirement!')
 
 Note that ``parse_package`` returns a 3-tuple ``(epoc, version, requirement)``,
-so if you only need to compare on version, you can pull it out from the tuple. 
+so if you only need to compare on version, you can pull it out from the tuple.
+
+Changes
+-------
+
+* *0.1.0* - Initial release
+* *0.1.1* - Added VersionUtilsError and RpmError classes. RpmError is thrown
+  if a package string cannot be parsed. All errors inherit from
+  VersionUtilsError
