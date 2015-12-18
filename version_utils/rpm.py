@@ -8,8 +8,9 @@ Public methods include:
       ``gcc-4.4.7-16.el6.x86_64`` and ``gcc-4.4.7-17.el6.x86_64``
     * :any:`compare_versions`: compare two RPM version strings (the
       bit between the dashes in an RPM package string)
-    * :any:`parse_package`: get name, EVR (epoch, version, release),
-      and architecture information from an RPM package string
+    * :any:`package`: parse an RPM package string to get name, epoch,
+      version, release, and architecture information. Returns as a
+      :any:`common.Package` object.
 """
 
 # Standard library imports
@@ -19,6 +20,7 @@ from logging import getLogger
 from re import compile
 
 # version_utils imports
+from version_utils.common import Package
 from version_utils.errors import RpmError
 
 
@@ -144,6 +146,29 @@ def compare_versions(version_a, version_b):
         return a_newer if len(chars_a) > len(chars_b) else b_newer
 
 
+def package(package_string, arch_included=True):
+    """Parse an RPM version string
+
+    Parses most (all tested) RPM version strings to get their name,
+    epoch, version, release, and architecture information. Epoch (also
+    called serial) is an optional component for RPM versions, and it
+    is also optional when providing a version string to this function.
+    RPM assumes the epoch to be 0 if it is not provided, so that
+    behavior is mirrored here.
+
+    :param str package_string:
+    :param bool arch_included:
+    :return: A :any:`common.Package` object containing all parsed
+        information
+    :rtype: common.Package
+    """
+    logger.debug('package({0}, {1})'.format(package_string, arch_included))
+    pkg_info = parse_package(package_string, arch_included)
+    pkg= Package(pkg_info['name'], pkg_info['EVR'][0], pkg_info['EVR'][1],
+                 pkg_info['EVR'][2], pkg_info['arch'], package=package_string)
+    return pkg
+
+
 def parse_package(package_string, arch_included=True):
     """Parse an RPM version string to get name, version, and arch
 
@@ -152,6 +177,8 @@ def parse_package(package_string, arch_included=True):
     an optional component of RPM versioning and is also optional in
     version strings provided to this function. RPM assumes the epoch
     to be 0 if it is not provided, so that behavior is mirrored here.
+
+    **Deprecated** since version 0.2.0. Use :any:`rpm.package` instead.
 
     :param str package_string: an RPM version string of the form
         returned by the ``rpm -q`` command
@@ -201,7 +228,11 @@ def _pop_arch(char_list):
     char = char_list.pop()
     while char != '.':
         arch_list.insert(0, char)
-        char = char_list.pop()
+        try:
+            char = char_list.pop()
+        except IndexError:  # Raised for a string with no periods
+            raise RpmError('Could not parse an architecture. Did you mean to '
+                           'set the arch_included flag to False?')
     logger.debug('arch chars: {0}'.format(arch_list))
     return ''.join(arch_list)
 

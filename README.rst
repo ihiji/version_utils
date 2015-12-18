@@ -43,20 +43,54 @@ present. The example below uses the ``rpm`` module. From your application::
     
     # Get a package string for an installed package
     out, err = Popen(['rpm', '-q', 'foo'], stdout=PIPE, stderr=PIPE).communicate()
-    sys_pkg = out
+    sys_pkg_str = out
     
     # Get package information
-    sys_pkg_info = rpm.parse_package(sys_pkg)
-    sys_pkg_ver = sys_pkg_info['EVR'][1]
-    
+    sys_package = rpm.package(sys_package)
+    sys_pkg_name = sys_package.name
+    sys_pkg_version = sys_package.version
+
     # Compare versions
-    result = rpm.compare_versions(pkg_req, sys_pkg_ver)
+    result = rpm.compare_versions(pkg_req, sys_pkg_version)
     
     if result < 0:  # sys_pkg was newer
-        print('System package does not satisfy requirement!')
+        print('System package {0} does not satisfy
+              requirement!'.format(sys_pkg_name))
 
-Note that ``parse_package`` returns a 3-tuple ``(epoc, version, requirement)``,
-so if you only need to compare on version, you can pull it out from the tuple.
+In addition to indirectly comparing versions, a :any:`compare_packages`
+function is provided to directly compare package strings, using the
+same logic as the package manager::
+
+    from version_utils import rpm
+
+    sys_pkg = 'perl-Compress-Raw-Zlib-2.021-136.el6_6.1.x86_64'
+    repo_pkg = 'perl-Compress-Raw-Zlib-2.021-138.el6_6.1.x86_64'
+
+    result = rpm.compare_packages(repo_pkg, sys_pkg)
+
+    if result > 0:  # repo_pkg is newer
+        print('Repo package is newer')
+
+The :any:`Package` class can be used to succinctly transmit package
+information::
+
+    from version_utils import rpm
+
+    pkg_str = 'pkgconfig-0.23-9.1.el6.x86_64'
+    pkg = rpm.package(pkg_str)
+
+    # Get package name, epoch, version, release, and architecture as a tuple
+    print(pkg.info)
+
+    # Access the package string that was parsed to make the Package object
+    print(pkg.package)
+
+    # Access the epoch, version, and release information as a tuple
+    print(pkg.evr)
+
+    # Access name, epoch, version, release, and architecture independently
+    print('Name: {0}, Epoch: {1}, Version: {2}, Release: {3}, Arch:
+          {4}'.format(pkg.name, pkg.epoch, pkg.version, pkg.release, pkg.arch))
 
 Changes
 -------
@@ -65,3 +99,7 @@ Changes
 * *0.1.1* - Added VersionUtilsError and RpmError classes. RpmError is thrown
   if a package string cannot be parsed. All errors inherit from
   VersionUtilsError
+* *0.2.0* - Added :any:`common.Package` class and :any:`rpm.package` method to
+  return a Package object when parsing package strings. Deprecated public
+  access to the :any:`rpm.parse_package` method, although the function remains
+  unchanged for backwards compatibility.

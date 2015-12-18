@@ -6,6 +6,8 @@ Submodules
 
 .. toctree::
 
+   version_utils.common
+   version_utils.errors
    version_utils.rpm
 
 Module contents

@@ -4,18 +4,25 @@ Test module for version_utils
 
 try:
     import unittest2 as unittest
-    from mock import MagicMock, patch
 except ImportError:
     import unittest
+
+try:
     from unittest.mock import MagicMock, patch
+except ImportError:
+    from mock import MagicMock, patch
 
 from logging import getLogger
+from sys import path
 
+path.append('..')
 from version_utils import rpm
+from version_utils import errors
 
 
 logger = getLogger(__name__)
 
+# Version strings for testing, along with their parsed information
 version_strings = {
             'nmap-6.40-1.i386': {
                 'name': 'nmap',
@@ -104,6 +111,7 @@ version_strings = {
         }
 
 class RpmTestCase(unittest.TestCase):
+    """Tests for standard RPM module usage"""
 
     def test_pop_arch(self):
         for vs, info in version_strings.items():
@@ -112,12 +120,29 @@ class RpmTestCase(unittest.TestCase):
             self.assertEqual(info['arch'], arch)
 
     def test_parse_information(self):
+        """test the parse_information function for all version_strings"""
         for vs, info in version_strings.items():
             evr = (info['epoch'], info['version'], info['release'])
             parsed = rpm.parse_package(vs)
             self.assertEqual(info['name'], parsed['name'])
             self.assertEqual(evr, parsed['EVR'])
             self.assertEqual(info['arch'], parsed['arch'])
+
+    def test_package(self):
+        """Test the package function with all version_strings"""
+        for vs, info in version_strings.items():
+            expect = (info['name'], info['epoch'], info['version'],
+                      info['release'], info['arch'])
+            pkg = rpm.package(vs)
+            self.assertEqual(expect, pkg.info)
+
+    def test_parse_package_bad_package_no_arch(self):
+        with self.assertRaises(errors.RpmError):
+            rpm.parse_package('what_even_is_this_thing')
+
+    def test_parse_package_bad_package(self):
+        with self.assertRaises(errors.RpmError):
+            rpm.parse_package('blargleblargle.aiiii')
 
     def test_check_leading(self):
         test_strs = [
