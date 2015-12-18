@@ -13,7 +13,9 @@ except ImportError:
     from mock import MagicMock, patch
 
 from logging import getLogger
+from sys import path
 
+path.append('..')
 from version_utils import rpm
 from version_utils import errors
 
@@ -127,7 +129,7 @@ class RpmTestCase(unittest.TestCase):
             self.assertEqual(info['arch'], parsed['arch'])
 
     def test_package(self):
-        """Test the package function with all verison_strings"""
+        """Test the package function with all version_strings"""
         for vs, info in version_strings.items():
             expect = (info['name'], info['epoch'], info['version'],
                       info['release'], info['arch'])
