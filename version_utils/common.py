@@ -36,7 +36,7 @@ class Package(object):
     """
 
     def __init__(self, name, epoch=None, version=None, release=None,
-                 arch=None, package=None):
+                 arch=None, package_str=None):
         self.name = name
         self.epoch = epoch
         self.version = version
@@ -44,7 +44,7 @@ class Package(object):
         self.arch = arch
         self.evr = (epoch, version, release)
         self.info = (name, epoch, version, release, arch)
-        self.package = package
+        self.package = package_str
 
     def __str__(self):
         """Create a string representation of a Package object"""

@@ -57,6 +57,7 @@ present. The example below uses the ``rpm`` module. From your application::
         print('System package {0} does not satisfy
               requirement!'.format(sys_pkg_name))
 
+
 In addition to indirectly comparing versions, a :any:`compare_packages`
 function is provided to directly compare package strings, using the
 same logic as the package manager::
@@ -70,6 +71,7 @@ same logic as the package manager::
 
     if result > 0:  # repo_pkg is newer
         print('Repo package is newer')
+
 
 The :any:`Package` class can be used to succinctly transmit package
 information::
@@ -91,6 +93,7 @@ information::
     # Access name, epoch, version, release, and architecture independently
     print('Name: {0}, Epoch: {1}, Version: {2}, Release: {3}, Arch:
           {4}'.format(pkg.name, pkg.epoch, pkg.version, pkg.release, pkg.arch))
+
 
 Changes
 -------
