@@ -21,6 +21,11 @@ Currently, only RPM/Yum style packages are supported, but we have plans to add
 dpkg/Debian in the near future. Development will probably slow from there, 
 although Pacman/Arch and various other distributions are on the radar.
 
+Note that the ``compare_versions`` function in the ``rpm`` module will probably
+work for the majority of ``.deb`` package versions. However, there are some
+differences, and it will fail in certain cases. Use at your own risk until
+official support for debian version parsing is released.
+
 Installation
 ------------
 
