@@ -95,14 +95,41 @@ information::
           {4}'.format(pkg.name, pkg.epoch, pkg.version, pkg.release, pkg.arch))
 
 
-Changes
--------
+Change Log
+----------
 
-* *0.1.0* - Initial release
-* *0.1.1* - Added VersionUtilsError and RpmError classes. RpmError is thrown
-  if a package string cannot be parsed. All errors inherit from
-  VersionUtilsError
-* *0.2.0* - Added :any:`common.Package` class and :any:`rpm.package` method to
-  return a Package object when parsing package strings. Deprecated public
-  access to the :any:`rpm.parse_package` method, although the function remains
-  unchanged for backwards compatibility.
+0.2.2
++++++
+
+Added ``version.py`` with automatic version parsing by ``setup.py``
+
+Added ``tox.ini`` and tox integration
+
+Improved error handling in the ``compare_versions`` function in ``rpm``
+
+0.2.1
++++++
+
+Bugfix release only
+
+0.2.0
++++++
+
+Added :any:`common.Package` class and :any:`rpm.package` method to
+return a Package object when parsing package strings.
+
+Deprecated public access to the :any:`rpm.parse_package` method, although the
+function remains unchanged for backwards compatibility.
+
+0.1.1
++++++
+
+Added VersionUtilsError and RpmError classes. RpmError is thrown
+if a package string cannot be parsed. All errors inherit from
+VersionUtilsError
+
+0.1.0
++++++
+
+Initial release
+
