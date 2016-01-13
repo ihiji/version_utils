@@ -4,8 +4,13 @@ setup.py module for version_utils
 
 
 from __future__ import (absolute_import, unicode_literals)
+from pkg_resources import resource_string
 from setuptools import setup, find_packages
 
+# Get version info without importing version.py
+version_info = {}
+version_txt = resource_string('version_utils', 'version.py')
+exec(version_txt, version_info)
 
 long_description = ('version_utils is a pure Python convenience library for'
                     'parsing system package strings and comparing package '
@@ -16,7 +21,7 @@ long_description = ('version_utils is a pure Python convenience library for'
 
 setup(
     name='version_utils',
-    version='0.2.0',
+    version=version_info['__version__'],
     description=('Library for parsing system package strings and comparing '
                  'package versions'),
     url='http://www.github.com/ihiji/version_utils',
@@ -43,5 +48,5 @@ setup(
     ],
     keywords=('ihiji version compare parse rpm yum versions comparison '
               'utility utilities control distribution'),
-    packages=find_packages(where='version_utils')
+    packages=find_packages(exclude=['tests'])
 )

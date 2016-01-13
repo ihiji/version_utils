@@ -113,16 +113,22 @@ def compare_versions(version_a, version_b):
     list having been completely consumed while some characters remain on
     the other, for example when comparing 1.05b to 1.05.
 
-    :param str version_a: An RPM version or release string
-    :param str version_b: An RPM version or release string
+    :param unicode version_a: An RPM version or release string
+    :param unicode version_b: An RPM version or release string
     :return: 1 (if ``a`` is newer), 0 (if versions are equal), or -1
         (if ``b`` is newer)
     :rtype: int
+    :raises RpmError: if an a type is passed that cannot be converted to
+        a list
     """
     logger.debug('compare_versions({0}, {1})'.format(version_a, version_b))
     if version_a == version_b:
         return a_eq_b
-    chars_a, chars_b = list(version_a), list(version_b)
+    try:
+        chars_a, chars_b = list(version_a), list(version_b)
+    except TypeError:
+        raise RpmError('Could not compare {0} to '
+                       '{1}'.format(version_a, version_b))
     while len(chars_a) != 0 and len(chars_b) != 0:
         logger.debug('starting loop comparing {0} '
                      'to {1}'.format(chars_a, chars_b))
@@ -164,8 +170,9 @@ def package(package_string, arch_included=True):
     """
     logger.debug('package({0}, {1})'.format(package_string, arch_included))
     pkg_info = parse_package(package_string, arch_included)
-    pkg= Package(pkg_info['name'], pkg_info['EVR'][0], pkg_info['EVR'][1],
-                 pkg_info['EVR'][2], pkg_info['arch'], package=package_string)
+    pkg = Package(pkg_info['name'], pkg_info['EVR'][0], pkg_info['EVR'][1],
+                  pkg_info['EVR'][2], pkg_info['arch'],
+                  package_str=package_string)
     return pkg
 
 

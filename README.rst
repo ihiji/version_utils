@@ -57,6 +57,7 @@ present. The example below uses the ``rpm`` module. From your application::
         print('System package {0} does not satisfy
               requirement!'.format(sys_pkg_name))
 
+
 In addition to indirectly comparing versions, a :any:`compare_packages`
 function is provided to directly compare package strings, using the
 same logic as the package manager::
@@ -70,6 +71,7 @@ same logic as the package manager::
 
     if result > 0:  # repo_pkg is newer
         print('Repo package is newer')
+
 
 The :any:`Package` class can be used to succinctly transmit package
 information::
@@ -92,14 +94,42 @@ information::
     print('Name: {0}, Epoch: {1}, Version: {2}, Release: {3}, Arch:
           {4}'.format(pkg.name, pkg.epoch, pkg.version, pkg.release, pkg.arch))
 
-Changes
--------
 
-* *0.1.0* - Initial release
-* *0.1.1* - Added VersionUtilsError and RpmError classes. RpmError is thrown
-  if a package string cannot be parsed. All errors inherit from
-  VersionUtilsError
-* *0.2.0* - Added :any:`common.Package` class and :any:`rpm.package` method to
-  return a Package object when parsing package strings. Deprecated public
-  access to the :any:`rpm.parse_package` method, although the function remains
-  unchanged for backwards compatibility.
+Change Log
+----------
+
+0.2.2
++++++
+
+Added ``version.py`` with automatic version parsing by ``setup.py``
+
+Added ``tox.ini`` and tox integration
+
+Improved error handling in the ``compare_versions`` function in ``rpm``
+
+0.2.1
++++++
+
+Bugfix release only
+
+0.2.0
++++++
+
+Added :any:`common.Package` class and :any:`rpm.package` method to
+return a Package object when parsing package strings.
+
+Deprecated public access to the :any:`rpm.parse_package` method, although the
+function remains unchanged for backwards compatibility.
+
+0.1.1
++++++
+
+Added VersionUtilsError and RpmError classes. RpmError is thrown
+if a package string cannot be parsed. All errors inherit from
+VersionUtilsError
+
+0.1.0
++++++
+
+Initial release
+
