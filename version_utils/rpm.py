@@ -118,6 +118,8 @@ def compare_versions(version_a, version_b):
     :return: 1 (if ``a`` is newer), 0 (if versions are equal), or -1
         (if ``b`` is newer)
     :rtype: int
+    :raises RpmError: if an a type is passed that cannot be converted to
+        a list
     """
     logger.debug('compare_versions({0}, {1})'.format(version_a, version_b))
     if version_a == version_b:
