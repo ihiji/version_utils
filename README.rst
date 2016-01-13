@@ -103,6 +103,11 @@ Change Log
 
 Added ``version.py`` with automatic version parsing by ``setup.py``
 
+Added ``rpm`` and ``common`` modules to ``__init__.py``
+
+Imported ``__version__`` and ``__version_info__`` information into
+``__init__.py``
+
 Added ``tox.ini`` and tox integration
 
 Improved error handling in the ``compare_versions`` function in ``rpm``
