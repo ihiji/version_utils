@@ -58,7 +58,7 @@ present. The example below uses the ``rpm`` module. From your application::
               requirement!'.format(sys_pkg_name))
 
 
-In addition to indirectly comparing versions, a :any:`compare_packages`
+In addition to indirectly comparing versions, a `compare_packages`
 function is provided to directly compare package strings, using the
 same logic as the package manager::
 
@@ -73,7 +73,7 @@ same logic as the package manager::
         print('Repo package is newer')
 
 
-The :any:`Package` class can be used to succinctly transmit package
+The `Package` class can be used to succinctly transmit package
 information::
 
     from version_utils import rpm
@@ -115,10 +115,10 @@ Bugfix release only
 0.2.0
 +++++
 
-Added :any:`common.Package` class and :any:`rpm.package` method to
+Added `common.Package` class and `rpm.package` method to
 return a Package object when parsing package strings.
 
-Deprecated public access to the :any:`rpm.parse_package` method, although the
+Deprecated public access to the `rpm.parse_package` method, although the
 function remains unchanged for backwards compatibility.
 
 0.1.1
