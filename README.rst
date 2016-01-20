@@ -100,6 +100,13 @@ information::
           {4}'.format(pkg.name, pkg.epoch, pkg.version, pkg.release, pkg.arch))
 
 
+Contributing
+------------
+
+Contributions to ``version_utils`` are welcome. Feel free to fork, raise
+issues, etc.
+
+
 Change Log
 ----------
 
