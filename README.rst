@@ -1,3 +1,18 @@
+.. -*- mode: rst; coding: utf-8 -*-
+
+==========================================================
+version_utils - pure python version parsing and comparison
+==========================================================
+
+:Source:        https://github.com/ihiji/version_utils
+:PyPI:          https://pypi.python.org/pypi/version_utils
+:Travis:        https://travis-ci.org/ihiji/version_utils
+:Maintainer:    Matthew Planchard <mplanchard@ihiji.com>
+:License:       GPLv3
+
+.. contents:: Table of Contents
+    :backlinks: top
+
 Introduction
 ------------
 
@@ -107,8 +122,8 @@ Contributions to ``version_utils`` are welcome. Feel free to fork, raise
 issues, etc.
 
 
-Change Log
-----------
+Changelog
+---------
 
 0.2.2
 +++++
