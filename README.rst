@@ -1,3 +1,18 @@
+.. -*- mode: rst; coding: utf-8 -*-
+
+==========================================================
+version_utils - pure python version parsing and comparison
+==========================================================
+
+:Source:        https://github.com/ihiji/version_utils
+:PyPI:          https://pypi.python.org/pypi/version_utils
+:Travis:        https://travis-ci.org/ihiji/version_utils
+:Maintainer:    Matthew Planchard <mplanchard@ihiji.com>
+:License:       GPLv3
+
+.. contents:: Table of Contents
+    :backlinks: top
+
 Introduction
 ------------
 
@@ -20,6 +35,11 @@ Current Status and Roadmap
 Currently, only RPM/Yum style packages are supported, but we have plans to add
 dpkg/Debian in the near future. Development will probably slow from there, 
 although Pacman/Arch and various other distributions are on the radar.
+
+Note that the ``compare_versions`` function in the ``rpm`` module will probably
+work for the majority of ``.deb`` package versions. However, there are some
+differences, and it will fail in certain cases. Use at your own risk until
+official support for debian version parsing is released.
 
 Installation
 ------------
@@ -58,7 +78,7 @@ present. The example below uses the ``rpm`` module. From your application::
               requirement!'.format(sys_pkg_name))
 
 
-In addition to indirectly comparing versions, a :any:`compare_packages`
+In addition to indirectly comparing versions, a `compare_packages`
 function is provided to directly compare package strings, using the
 same logic as the package manager::
 
@@ -73,7 +93,7 @@ same logic as the package manager::
         print('Repo package is newer')
 
 
-The :any:`Package` class can be used to succinctly transmit package
+The `Package` class can be used to succinctly transmit package
 information::
 
     from version_utils import rpm
@@ -95,13 +115,25 @@ information::
           {4}'.format(pkg.name, pkg.epoch, pkg.version, pkg.release, pkg.arch))
 
 
-Change Log
-----------
+Contributing
+------------
+
+Contributions to ``version_utils`` are welcome. Feel free to fork, raise
+issues, etc.
+
+
+Changelog
+---------
 
 0.2.2
 +++++
 
 Added ``version.py`` with automatic version parsing by ``setup.py``
+
+Added ``rpm`` and ``common`` modules to ``__init__.py``
+
+Imported ``__version__`` and ``__version_info__`` information into
+``__init__.py``
 
 Added ``tox.ini`` and tox integration
 
@@ -115,10 +147,10 @@ Bugfix release only
 0.2.0
 +++++
 
-Added :any:`common.Package` class and :any:`rpm.package` method to
+Added `common.Package` class and `rpm.package` method to
 return a Package object when parsing package strings.
 
-Deprecated public access to the :any:`rpm.parse_package` method, although the
+Deprecated public access to the `rpm.parse_package` method, although the
 function remains unchanged for backwards compatibility.
 
 0.1.1
