@@ -59,7 +59,7 @@ def compare_packages(rpm_str_a, rpm_str_b, arch_provided=True):
         (``b`` is newer)
     :rtype: int
     """
-    logger.debug('resolve_versions({0}, {1})'.format(rpm_str_a, rpm_str_b))
+    logger.debug('resolve_versions(%s, %s)', rpm_str_a, rpm_str_b)
     evr_a = parse_package(rpm_str_a, arch_provided)['EVR']
     evr_b = parse_package(rpm_str_b, arch_provided)['EVR']
     return labelCompare(evr_a, evr_b)
@@ -79,8 +79,8 @@ def compare_evrs(evr_a, evr_b):
     :param tuple evr_a: an EVR tuple
     :param tuple evr_b: an EVR tuple
     """
-    (a_epoch, a_ver, a_rel) = evr_a
-    (b_epoch, b_ver, b_rel) = evr_b
+    a_epoch, a_ver, a_rel = evr_a
+    b_epoch, b_ver, b_rel = evr_b
     if a_epoch != b_epoch:
         return a_newer if a_epoch > b_epoch else b_newer
     ver_comp = compare_versions(a_ver, b_ver)
@@ -90,11 +90,14 @@ def compare_evrs(evr_a, evr_b):
     return rel_comp
 
 
+# pylint: disable=invalid-name
+# noinspection PyPep8Naming
 def labelCompare(evr_a, evr_b):
     """ Convenience function to provide the same behaviour as
     labelCompare from rpm-python.
 
-    To be used as a drop-in replacement for labelCompare.
+    To be used as a drop-in replacement for labelCompare, thus the
+    utilization of the non-standard camelCase variable name.
 
     To use the version_utils version and fall back to rpm:
 
@@ -106,7 +109,7 @@ def labelCompare(evr_a, evr_b):
     :param tuple evr_a: an EVR tuple
     :param tuple evr_b: an EVR tuple
     """
-    compare_evrs(evr_a, evr_b)
+    return compare_evrs(evr_a, evr_b)
 
 
 def compare_versions(version_a, version_b):
@@ -151,7 +154,7 @@ def compare_versions(version_a, version_b):
     :raises RpmError: if an a type is passed that cannot be converted to
         a list
     """
-    logger.debug('compare_versions({0}, {1})'.format(version_a, version_b))
+    logger.debug('compare_versions(%s, %s)', version_a, version_b)
     if version_a == version_b:
         return a_eq_b
     try:
@@ -160,8 +163,8 @@ def compare_versions(version_a, version_b):
         raise RpmError('Could not compare {0} to '
                        '{1}'.format(version_a, version_b))
     while len(chars_a) != 0 and len(chars_b) != 0:
-        logger.debug('starting loop comparing {0} '
-                     'to {1}'.format(chars_a, chars_b))
+        logger.debug('starting loop comparing %s '
+                     'to %s', chars_a, chars_b)
         _check_leading(chars_a, chars_b)
         if chars_a[0] == '~' and chars_b[0] == '~':
             map(lambda x: x.pop(0), (chars_a, chars_b))
@@ -198,7 +201,7 @@ def package(package_string, arch_included=True):
         information
     :rtype: common.Package
     """
-    logger.debug('package({0}, {1})'.format(package_string, arch_included))
+    logger.debug('package(%s, %s)', package_string, arch_included)
     pkg_info = parse_package(package_string, arch_included)
     pkg = Package(pkg_info['name'], pkg_info['EVR'][0], pkg_info['EVR'][1],
                   pkg_info['EVR'][2], pkg_info['arch'],
@@ -226,20 +229,18 @@ def parse_package(package_string, arch_included=True):
     :rtype: dict
     """
     # Yum sets epoch values to 0 if they are not specified
-    logger.debug('parse_information({0}, '
-                 '{1})'.format(package_string, arch_included))
+    logger.debug('parse_package(%s, %s)', package_string, arch_included)
     default_epoch = '0'
     arch = None
     if arch_included:
         char_list = list(package_string)
         arch = _pop_arch(char_list)
         package_string = ''.join(char_list)
-        logger.debug('updated version_string: {0}'.format(package_string))
+        logger.debug('updated version_string: %s', package_string)
     try:
         name, epoch, version, release = _rpm_re.match(package_string).groups()
     except AttributeError:
-        raise RpmError('Could not parse package string: '
-                       '{0}'.format(package_string))
+        raise RpmError('Could not parse package string: %s' % package_string)
     if epoch == '' or epoch is None:
         epoch = default_epoch
     info = {
@@ -247,7 +248,7 @@ def parse_package(package_string, arch_included=True):
         'EVR': (epoch, version, release),
         'arch': arch
     }
-    logger.debug('parsed information: {0}'.format(info))
+    logger.debug('parsed information: %s', info)
     return info
 
 
@@ -261,7 +262,7 @@ def _pop_arch(char_list):
     :return: the parsed architecture as a string
     :rtype: str
     """
-    logger.debug('_pop_arch{0}'.format(char_list))
+    logger.debug('_pop_arch(%s)', char_list)
     arch_list = []
     char = char_list.pop()
     while char != '.':
@@ -271,7 +272,7 @@ def _pop_arch(char_list):
         except IndexError:  # Raised for a string with no periods
             raise RpmError('Could not parse an architecture. Did you mean to '
                            'set the arch_included flag to False?')
-    logger.debug('arch chars: {0}'.format(arch_list))
+    logger.debug('arch chars: %s', arch_list)
     return ''.join(arch_list)
 
 
@@ -286,12 +287,12 @@ def _check_leading(*char_lists):
     :return: None
     :rtype: None
     """
-    logger.debug('_check_leading{0}'.format(char_lists))
+    logger.debug('_check_leading(%s)', char_lists)
     for char_list in char_lists:
         while (len(char_list) != 0 and not char_list[0].isalnum() and
                 not char_list[0] == '~'):
             char_list.pop(0)
-        logger.debug('updated list: {0}'.format(char_list))
+        logger.debug('updated list: %s', char_list)
 
 
 def _trim_zeros(*char_lists):
@@ -305,11 +306,11 @@ def _trim_zeros(*char_lists):
     :return: None
     :rtype: None
     """
-    logger.debug('_trim_zeros({0})'.format(char_lists))
+    logger.debug('_trim_zeros(%s)', char_lists)
     for char_list in char_lists:
         while len(char_list) != 0 and char_list[0] == '0':
             char_list.pop(0)
-        logger.debug('updated block: {0}'.format(char_list))
+        logger.debug('updated block: %s', char_list)
 
 
 def _pop_digits(char_list):
@@ -323,12 +324,12 @@ def _pop_digits(char_list):
     :return: a list of string digits
     :rtype: list
     """
-    logger.debug('_pop_digits({0})'.format(char_list))
+    logger.debug('_pop_digits(%s)', char_list)
     digits = []
     while len(char_list) != 0 and char_list[0].isdigit():
         digits.append(char_list.pop(0))
-    logger.debug('got digits: {0}'.format(digits))
-    logger.debug('updated char list: {0}'.format(char_list))
+    logger.debug('got digits: %s', digits)
+    logger.debug('updated char list: %s', char_list)
     return digits
 
 
@@ -343,12 +344,12 @@ def _pop_letters(char_list):
     :return: a list of characters
     :rtype: list
     """
-    logger.debug('_pop_letters({0})'.format(char_list))
+    logger.debug('_pop_letters(%s)', char_list)
     letters = []
     while len(char_list) != 0 and char_list[0].isalpha():
         letters.append(char_list.pop(0))
-    logger.debug('got letters: {0}'.format(letters))
-    logger.debug('updated char list: {0}'.format(char_list))
+    logger.debug('got letters: %s', letters)
+    logger.debug('updated char list: %s', char_list)
     return letters
 
 
@@ -378,7 +379,7 @@ def _compare_blocks(block_a, block_b):
         -1 (if ``b`` is newer)
     :rtype: int
     """
-    logger.debug('_compare_blocks({0}, {1})'.format(block_a, block_b))
+    logger.debug('_compare_blocks(%s, %s)', block_a, block_b)
     if block_a[0].isdigit():
         _trim_zeros(block_a, block_b)
         if len(block_a) != len(block_b):
@@ -418,7 +419,7 @@ def _get_block_result(chars_a, chars_b):
         -1 (if ``b`` is newer)
     :rtype: int
     """
-    logger.debug('_get_block_result({0}, {1})'.format(chars_a, chars_b))
+    logger.debug('_get_block_result(%s, %s)', chars_a, chars_b)
     first_is_digit = chars_a[0].isdigit()
     pop_func = _pop_digits if first_is_digit else _pop_letters
     return_if_no_b = a_newer if first_is_digit else b_newer
