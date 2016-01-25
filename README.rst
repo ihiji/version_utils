@@ -78,7 +78,7 @@ present. The example below uses the ``rpm`` module. From your application::
               requirement!'.format(sys_pkg_name))
 
 
-In addition to indirectly comparing versions, a `compare_packages`
+In addition to indirectly comparing versions, a ``compare_packages``
 function is provided to directly compare package strings, using the
 same logic as the package manager::
 
@@ -93,8 +93,9 @@ same logic as the package manager::
         print('Repo package is newer')
 
 
-The `Package` class can be used to succinctly transmit package
-information::
+The ``Package`` class can be used to succinctly transmit package
+information. A factory function, ``rpm.package()``, is provided to
+instantiate ``Package`` instances::
 
     from version_utils import rpm
 
@@ -122,8 +123,30 @@ Contributions to ``version_utils`` are welcome. Feel free to fork, raise
 issues, etc.
 
 
+Contributors
+------------
+
+I would like to express my sincere thanks to the following GitHub users for
+their contributions to and assistance with this project:
+
+* Joseph Knight (jknightihiji_)
+* Thomas Hoger (thoger_)
+
+.. _jknightihiji: https://github.com/jknightihiji
+.. _thoger: https://github.com/thoger
+
+
 Changelog
 ---------
+
+0.2.3
++++++
+
+Fixed issue `#7`_ where version strings without epoch strings and with multi-
+digit primary version numbers would return the first digit of the primary
+version as the epoch and the second digit as the primary version.
+
+.. _#7: https://github.com/ihiji/version_utils/issues/7
 
 0.2.2
 +++++
