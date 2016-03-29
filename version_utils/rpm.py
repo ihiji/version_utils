@@ -24,7 +24,7 @@ from version_utils.common import Package
 from version_utils.errors import RpmError
 
 
-_rpm_re = compile('(\S+)-(\d*):?([\w~]+[\w.~]*)-(~?\w+[\w.]*)')
+_rpm_re = compile('(\S+)-(?:(\d*):)?([\w~]+[\w.~]*)-(~?\w+[\w.]*)')
 
 logger = getLogger(__name__)
 
@@ -210,7 +210,8 @@ def parse_package(package_string, arch_included=True):
     except AttributeError:
         raise RpmError('Could not parse package string: '
                        '{0}'.format(package_string))
-    epoch = default_epoch if epoch == '' else epoch
+    if epoch == '' or epoch is None:
+        epoch = default_epoch
     info = {
         'name': name,
         'EVR': (epoch, version, release),
