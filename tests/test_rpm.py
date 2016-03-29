@@ -107,8 +107,16 @@ version_strings = {
                 'version': '1.~0.1e',
                 'release': '42.el6',
                 'arch': 'x86_64'
+            },
+            'firefox-45.0-4.fc22.x86_64': {
+                'name': 'firefox',
+                'epoch': '0',
+                'version': '45.0',
+                'release': '4.fc22',
+                'arch': 'x86_64'
             }
         }
+
 
 class RpmTestCase(unittest.TestCase):
     """Tests for standard RPM module usage"""
