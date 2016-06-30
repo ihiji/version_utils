@@ -48,14 +48,6 @@ def compare_packages(rpm_str_a, rpm_str_b, arch_provided=True):
     architecture, the ``arch_provided`` parameter should be set to
     False.
 
-    This method compares the epoch, version, and release of the
-    provided package strings, assuming that epoch is 0 if not provided.
-    Comparison is performed on the epoch, then the version, and then
-    the release. If at any point a non-equality is found, the result is
-    returned without any remaining comparisons being performed (e.g. if
-    the epochs of the packages differ, the versions are releases are
-    not compared).
-
     Note that the packages do not have to be the same package (i.e.
     they do not require the same name or architecture).
 
@@ -68,8 +60,27 @@ def compare_packages(rpm_str_a, rpm_str_b, arch_provided=True):
     :rtype: int
     """
     logger.debug('resolve_versions({0}, {1})'.format(rpm_str_a, rpm_str_b))
-    a_epoch, a_ver, a_rel = parse_package(rpm_str_a, arch_provided)['EVR']
-    b_epoch, b_ver, b_rel = parse_package(rpm_str_b, arch_provided)['EVR']
+    evr_a = parse_package(rpm_str_a, arch_provided)['EVR']
+    evr_b = parse_package(rpm_str_b, arch_provided)['EVR']
+    return labelCompare(evr_a, evr_b)
+
+
+def compare_evrs(evr_a, evr_b):
+    """Compare two EVR tuples to determine which is newer
+
+    This method compares the epoch, version, and release of the
+    provided package strings, assuming that epoch is 0 if not provided.
+    Comparison is performed on the epoch, then the version, and then
+    the release. If at any point a non-equality is found, the result is
+    returned without any remaining comparisons being performed (e.g. if
+    the epochs of the packages differ, the versions are releases are
+    not compared).
+
+    :param tuple evr_a: an EVR tuple
+    :param tuple evr_b: an EVR tuple
+    """
+    (a_epoch, a_ver, a_rel) = evr_a
+    (b_epoch, b_ver, b_rel) = evr_b
     if a_epoch != b_epoch:
         return a_newer if a_epoch > b_epoch else b_newer
     ver_comp = compare_versions(a_ver, b_ver)
@@ -77,6 +88,25 @@ def compare_packages(rpm_str_a, rpm_str_b, arch_provided=True):
         return ver_comp
     rel_comp = compare_versions(a_rel, b_rel)
     return rel_comp
+
+
+def labelCompare(evr_a, evr_b):
+    """ Convenience function to provide the same behaviour as
+    labelCompare from rpm-python.
+
+    To be used as a drop-in replacement for labelCompare.
+
+    To use the version_utils version and fall back to rpm:
+
+    try:
+        from version_utils.rpm import labelCompare
+    except ImportError:
+        from rpm import labelCompare
+
+    :param tuple evr_a: an EVR tuple
+    :param tuple evr_b: an EVR tuple
+    """
+    compare_evrs(evr_a, evr_b)
 
 
 def compare_versions(version_a, version_b):
