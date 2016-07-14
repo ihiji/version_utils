@@ -145,7 +145,21 @@ version_info = [
             'release': '4.fc22',
             'arch': 'x86_64'
         }
+    ),
+    (
+        'aaa_base-13.2+git20140911.61c1681-10.1.x86_64',
+        {
+            'name': 'aaa_base',
+            'epoch': '0',
+            'version': '13.2+git20140911.61c1681',
+            'release': '10.1',
+            'arch': 'x86_64'
+        }
     )
+]
+
+version_info_no_arch = [
+    ('.'.join(i[0].split('.')[:-1]), i[1]) for i in version_info
 ]
 
 
@@ -176,6 +190,16 @@ def test_package(version_info):
     expect = (info['name'], info['epoch'], info['version'],
               info['release'], info['arch'])
     pkg = rpm.package(vs)
+    assert expect == pkg.info
+
+
+@pytest.mark.parametrize('version_info', version_info_no_arch)
+def test_package_no_arch(version_info):
+    """Test the package function with the no_arch option"""
+    vs, info = version_info
+    expect = (info['name'], info['epoch'], info['version'],
+              info['release'], None)
+    pkg = rpm.package(vs, arch_included=False)
     assert expect == pkg.info
 
 

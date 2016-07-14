@@ -24,7 +24,7 @@ from version_utils.common import Package
 from version_utils.errors import RpmError
 
 
-_rpm_re = compile('(\S+)-(?:(\d*):)?([\w~]+[\w.~]*)-(~?\w+[\w.]*)')
+_rpm_re = compile('(\S+)-(?:(\d*):)?(.*)-(~?\w+[\w.]*)')
 
 logger = getLogger(__name__)
 
