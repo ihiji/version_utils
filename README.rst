@@ -131,13 +131,27 @@ their contributions to and assistance with this project:
 
 * Joseph Knight (jknightihiji_)
 * Thomas Hoger (thoger_)
+* Marcus Furlong (furlongm_)
 
 .. _jknightihiji: https://github.com/jknightihiji
 .. _thoger: https://github.com/thoger
+.. _furlongm: https://gibhub.com/furlongm
 
 
 Changelog
 ---------
+
+0.3.0
++++++
+
+Added labelCompare functionality for parity with the official `rpm`
+package
+
+Updated tests to use py.test; added more tests
+
+Improved test logging
+
+Improved logging efficiency with `%s` formatting
 
 0.2.3
 +++++
