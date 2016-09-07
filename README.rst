@@ -66,7 +66,7 @@ present. The example below uses the ``rpm`` module. From your application::
     sys_pkg_str = out
     
     # Get package information
-    sys_package = rpm.package(sys_package)
+    sys_package = rpm.package(sys_pkg_str)
     sys_pkg_name = sys_package.name
     sys_pkg_version = sys_package.version
 
