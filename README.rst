@@ -146,7 +146,7 @@ Changelog
 0.3.1
 +++++
 
-Updated documentation (alxgu_
+Updated documentation (alxgu_)
 
 
 0.3.0
