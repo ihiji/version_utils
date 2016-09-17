@@ -132,14 +132,22 @@ their contributions to and assistance with this project:
 * Joseph Knight (jknightihiji_)
 * Thomas Hoger (thoger_)
 * Marcus Furlong (furlongm_)
+* Alex (alxgu_)
 
 .. _jknightihiji: https://github.com/jknightihiji
 .. _thoger: https://github.com/thoger
 .. _furlongm: https://gibhub.com/furlongm
+.. _alxgu: https://github.com/alxgu
 
 
 Changelog
 ---------
+
+0.3.1
++++++
+
+Updated documentation (alxgu_
+
 
 0.3.0
 +++++
