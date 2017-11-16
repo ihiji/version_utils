@@ -28,6 +28,7 @@ class Package(object):
     :ivar str name: package name
     :ivar str epoch: package epoch
     :ivar str version: package version
+    :ivar str release: package release
     :ivar str arch: package architecture
     :ivar tuple evr: a 3-tuple containing (epoch, version, release)
     :ivar tuple info: a 5-tuple containing (name, epoch, version, release,
