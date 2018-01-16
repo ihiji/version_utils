@@ -166,6 +166,8 @@ def compare_versions(version_a, version_b):
         logger.debug('starting loop comparing %s '
                      'to %s', chars_a, chars_b)
         _check_leading(chars_a, chars_b)
+        if len(chars_a) == 0 or len(chars_b) == 0:
+            break
         if chars_a[0] == '~' and chars_b[0] == '~':
             map(lambda x: x.pop(0), (chars_a, chars_b))
         elif chars_a[0] == '~':
