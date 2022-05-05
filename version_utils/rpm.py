@@ -142,7 +142,8 @@ def compare_versions(version_a, version_b):
     remaining character lists are compared. If they have the same length
     (usually 0, since all characters have been popped), they are
     considered to be equal. Otherwise, whichever is longer is considered
-    to be newer. Generally, unequal length will be due to one character
+    to be newer, unless it starts with a ~, in which case it is considered
+    be older. Generally, unequal length will be due to one character
     list having been completely consumed while some characters remain on
     the other, for example when comparing 1.05b to 1.05.
 
@@ -167,7 +168,9 @@ def compare_versions(version_a, version_b):
                      'to %s', chars_a, chars_b)
         _check_leading(chars_a, chars_b)
         if chars_a[0] == '~' and chars_b[0] == '~':
-            map(lambda x: x.pop(0), (chars_a, chars_b))
+            chars_a.pop(0)
+            chars_b.pop(0)
+            continue
         elif chars_a[0] == '~':
             return b_newer
         elif chars_b[0] == '~':
@@ -182,7 +185,10 @@ def compare_versions(version_a, version_b):
         return a_eq_b
     else:
         logger.debug('versions not equal')
-        return a_newer if len(chars_a) > len(chars_b) else b_newer
+        if len(chars_a) > len(chars_b):
+            return b_newer if chars_a[0] == '~' else a_newer
+        else:
+            return a_newer if chars_b[0] == '~' else b_newer
 
 
 def package(package_string, arch_included=True):
