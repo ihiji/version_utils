@@ -168,7 +168,9 @@ def compare_versions(version_a, version_b):
                      'to %s', chars_a, chars_b)
         _check_leading(chars_a, chars_b)
         if chars_a[0] == '~' and chars_b[0] == '~':
-            map(lambda x: x.pop(0), (chars_a, chars_b))
+            chars_a.pop(0)
+            chars_b.pop(0)
+            continue
         elif chars_a[0] == '~':
             return b_newer
         elif chars_b[0] == '~':

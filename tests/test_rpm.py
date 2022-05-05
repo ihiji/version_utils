@@ -365,7 +365,11 @@ def test_get_block_res(str_a, str_b, exp):
     ('~1.2.3', '1.2.3', -1),
     ('1.2.3.a', '1.2.3.~alpha', 1),
     ('a~1.2.3', 'a', -1),
-    ('a', 'a~1.2.3', 1)
+    ('a', 'a~1.2.3', 1),
+    ('~1.2.3', '~1.2.4', -1),
+    ('~1.2.4', '~1.2.3', 1),
+    ('~~1.2.3', '~~1.2.4', -1),
+    ('~~1.2.4', '~~1.2.3', 1)
 ])
 def test_compare_versions(ver_a, ver_b, exp):
     res = rpm.compare_versions(ver_a, ver_b)
